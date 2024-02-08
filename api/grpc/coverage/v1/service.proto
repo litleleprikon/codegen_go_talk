@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option go_package = "github.com/litleleprikon/codegen_go_talk/pkg/api/grpc/coverage/v1";
+
+package coverage.v1;
+
+enum CoverageType {
+  COVERAGE_TYPE_UNSPECIFIED = 0;
+  COVERAGE_TYPE_UNCOVERED = 1;
+  COVERAGE_TYPE_COVERED = 2;
+}
+
+message LineCoverage {
+  string file = 1;
+  int64 line = 2;
+  CoverageType type = 3;
+}
+
+message AddCommitCoverageRequest {
+  string hash = 1;
+  repeated LineCoverage coverage = 2;
+}
+
+message GetCommitCoverageRequest {
+  string hash = 1;
+}
+
+message GetCommitCoverageResponse {
+  repeated LineCoverage coverage = 1;
+}
+
+message AddCommitCoverageResponse {}
+
+service CoverageService {
+  rpc AddCommitCoverage(AddCommitCoverageRequest) returns (AddCommitCoverageResponse) {}
+  rpc GetCommitCoverage(GetCommitCoverageRequest) returns (GetCommitCoverageResponse) {}
+}
